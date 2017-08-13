@@ -3,9 +3,14 @@
 
     <!--Stats cards-->
     <div class="row">
+      <div class="col-lg-3 col-sm-6">
+        <light-card :name="`all`"
+                    :restUrl="`http://localhost:8081/lights/0`"></light-card>
+      </div>
       <div class="col-lg-3 col-sm-6" v-for="stats in statsCards">
         <stats-card>
-          <div class="icon-big text-center" :class="`icon-${stats.type}`" slot="header">
+          <div class="icon-big text-center" :class="`icon-${stats.type}`"
+               slot="header">
             <i :class="stats.icon"></i>
           </div>
           <div class="numbers" slot="content">
@@ -23,7 +28,8 @@
     <div class="row">
 
       <div class="col-xs-12">
-        <chart-card :chart-data="usersChart.data" :chart-options="usersChart.options">
+        <chart-card :chart-data="usersChart.data"
+                    :chart-options="usersChart.options">
           <h4 class="title" slot="title">Users behavior</h4>
           <span slot="subTitle"> 24 Hours performance</span>
           <span slot="footer">
@@ -37,7 +43,7 @@
       </div>
 
       <div class="col-md-6 col-xs-12">
-        <chart-card :chart-data="preferencesChart.data"  chart-type="Pie">
+        <chart-card :chart-data="preferencesChart.data" chart-type="Pie">
           <h4 class="title" slot="title">Email Statistics</h4>
           <span slot="subTitle"> Last campaign performance</span>
           <span slot="footer">
@@ -51,7 +57,8 @@
       </div>
 
       <div class="col-md-6 col-xs-12">
-        <chart-card :chart-data="activityChart.data" :chart-options="activityChart.options">
+        <chart-card :chart-data="activityChart.data"
+                    :chart-options="activityChart.options">
           <h4 class="title" slot="title">2015 Sales</h4>
           <span slot="subTitle"> All products including Taxes</span>
           <span slot="footer">
@@ -70,8 +77,10 @@
 <script>
   import StatsCard from 'components/UIComponents/Cards/StatsCard.vue'
   import ChartCard from 'components/UIComponents/Cards/ChartCard.vue'
+  import LightCard from '../../UIComponents/Cards/LightCard'
   export default {
     components: {
+      LightCard,
       StatsCard,
       ChartCard
     },
