@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="content">
+    <div class="content" v-show="loaded">
       <div class="row">
         <div class="col-xs-5">
           <div class="icon-big text-center"
@@ -18,7 +18,8 @@
         <div class="col-xs-7">
           <div name="content">
             <color-picker :change="updateColor"
-                          :active="switchedOn"></color-picker>
+                          :active="switchedOn"
+                          :initialRGB="initialColor"></color-picker>
 
 
           </div>
@@ -50,17 +51,27 @@
       return {
         switchedOn: true,
         color: Array,
-        hexColor: ""
+        hexColor: "",
+        initialColor: [],
+        loaded: false
       }
     },
     methods: {
       toggle (value) {
         this.switchedOn = value
+        if (value === false) {
+          this.switchOff()
+        }
+      },
+      switchOff (){
+        this.sendColor({"r": 0, "g": 0, "b": 0})
       },
       updateColor (event) {
         this.color = event.color
         this.hexColor = rgbToHex(this.color.r, this.color.g, this.color.b)
-        this.sendColor(this.color)
+        if (this.switchedOn && this.loaded) {
+          this.sendColor(this.color)
+        }
       },
       sendColor(color, fading) {
         if (fading === undefined) {
@@ -76,14 +87,19 @@
           })
       }
     },
-    watch: {
-      switchedOn: function (switchedOn) {
-        if (!switchedOn) {
-          this.sendColor({"r": 0, "g": 0, "b": 0})
-        } else {
-          this.sendColor(this.color)
-        }
-      }
+    mounted: function () {
+      var tis = this;
+      axios.get('http://localhost:8081/lights/0')
+        .then(function (response) {
+          var color = response.data.color;
+          tis.initialColor = [color.red, color.green, color.blue];
+          if (response.data.turnedOn === true) {
+            tis.switchedOn = true
+          } else {
+            tis.switchedOn = false
+          }
+          tis.loaded = true;
+        })
     }
 
   }

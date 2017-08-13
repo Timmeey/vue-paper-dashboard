@@ -10,24 +10,36 @@
           <input type="range" min="0" max="100" v-model="l"/>
         </div>
       </div>
+      {{initialHue}},{{initialLightness}}
     </transition>
-    <div  v-bind:style="{'background': color}"></div>
+    <div v-bind:style="{'background': color}"></div>
   </div>
 </template>
 <script>
   export default {
     name: 'color-picker',
     template: "#color-picker-template",
-    props: ["change", "initial", "active"],
+    props: ['change', 'initialRGB', "active"],
     data: function () {
       return {
         isVisible: true,
-        h: 265,
+        h: this.initialHue,
         s: 100,
-        l: 99
+        l: this.initialLightness,
+        loaded: false
       }
     },
     computed: {
+      initialHue: function () {
+        var hue = rgbToHsl(this.initialRGB[0], this.initialRGB[1], this.initialRGB[2]).h;
+        this.h = hue;
+        return hue;
+      },
+      initialLightness: function () {
+        var lightness = rgbToHsl(this.initialRGB[0], this.initialRGB[1], this.initialRGB[2]).l * 2;
+        this.l = lightness;
+        return lightness;
+      },
       color: function () {
         var hsl = hsb2hsl(parseFloat(this.h) / 360, parseFloat(this.s) / 100, parseFloat(this.l) / 100)
 
@@ -37,6 +49,7 @@
         this.change({
           color: s
         });
+
         return s;
       },
       colorString: function () {
@@ -107,7 +120,6 @@
     },
 
     mounted: function () {
-      this.h = parseInt(Math.random() * 360)
     }
   }
 
@@ -166,6 +178,37 @@
       g: Math.round(g * 255),
       b: Math.round(b * 255)
     };
+  }
+
+  function rgbToHsl(r, g, b) {
+    r /= 255
+    g /= 255
+    b /= 255
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+
+    if (max === min) {
+      h = s = 0; // achromatic
+    } else {
+      var d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r:
+          h = (g - b) / d + (g < b ? 6 : 0);
+          break;
+        case g:
+          h = (b - r) / d + 2;
+          break;
+        case b:
+          h = (r - g) / d + 4;
+          break;
+      }
+      h /= 6;
+    }
+    h *= 360
+    s *= 100
+    l *= 100
+    return {h: h, s: s, l: l};
   }
 </script>
 <style>

@@ -22,7 +22,11 @@
     "semi": "off",
     "no-extra-semi": "off",
     "quotes": "off",
-    "space-before-function-paren": "off"
+    "space-before-function-paren": "off",
+    "keyword-spacing ": "off",
+    "space-before-blocks": "off",
+    "one-var": "off",
+    "operator-linebreak": "off"
   },
   // https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
   "extends": "standard",
