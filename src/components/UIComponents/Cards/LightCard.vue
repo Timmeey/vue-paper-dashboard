@@ -36,6 +36,7 @@
 <script>
   import ColorPicker from "../ColorPicker";
   import axios from 'axios'
+  import config from "config"
 
   export default {
     components: {ColorPicker},
@@ -45,11 +46,11 @@
         type: String,
         default: 'all'
       },
-      restUrl: String
+      lightName: String
     },
     data () {
       return {
-        switchedOn: true,
+        switchedOn: false,
         color: Array,
         hexColor: "",
         initialColor: [],
@@ -77,26 +78,27 @@
         if (fading === undefined) {
           fading = 250
         }
-        axios.post(this.restUrl, {
+        axios.post(config.backendUrl + '/lights/' + this.lightName, {
           "red": color.r,
           "green": color.g,
           "blue": color.b,
           "fading": fading
+        }).then(function (response) {
         })
-          .then(function (response) {
-          })
       }
     },
     mounted: function () {
+      console.log(this.lightName)
       var tis = this;
-      axios.get('http://localhost:8081/lights/0')
+      axios.get(config.backendUrl + '/lights/' + this.lightName)
         .then(function (response) {
           var color = response.data.color;
           tis.initialColor = [color.red, color.green, color.blue];
-          if (response.data.turnedOn === true) {
-            tis.switchedOn = true
-          } else {
+          console.log(tis.initialColor)
+          if (tis.initialColor[0] === 0 && tis.initialColor[1] === 0 && tis.initialColor[2] === 0) {
             tis.switchedOn = false
+          } else {
+            tis.switchedOn = true
           }
           tis.loaded = true;
         })

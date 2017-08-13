@@ -25,6 +25,7 @@
 </template>
 <script>
   import axios from 'axios'
+  import config from 'config'
   export default {
 
     props: {
@@ -71,7 +72,7 @@
         var request = {
           params: params
         }
-        axios.get('http://localhost:8081/oeffi/stations/' +
+        axios.get(backendUrl+'/oeffi/stations/' +
           this.station + '/departures', request)
           .then(function (response) {
             tis.departures = response.data

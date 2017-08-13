@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-lg-3 col-sm-6">
         <light-card :name="`all`"
-                    :restUrl="`http://localhost:8081/lights/0`"></light-card>
+                    :lightName="'0'"></light-card>
       </div>
       <div class="col-lg-3 col-sm-6" v-for="stats in statsCards">
         <stats-card>
