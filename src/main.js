@@ -1,8 +1,9 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import vClickOutside from "v-click-outside";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+
 // Plugins
 import GlobalComponents from "./globalComponents";
+import GlobalDirectives from './globalDirectives'
 import Notifications from "./components/UIComponents/NotificationPlugin";
 import SideBar from "./components/UIComponents/SidebarPlugin";
 import App from "./App";
@@ -18,7 +19,7 @@ import ToggleButton from "vue-js-toggle-button";
 // plugin setup
 Vue.use(VueRouter)
 Vue.use(GlobalComponents)
-Vue.use(vClickOutside)
+Vue.use(GlobalDirectives)
 Vue.use(Notifications)
 Vue.use(SideBar)
 Vue.use(ToggleButton)
