@@ -72,7 +72,7 @@
         var request = {
           params: params
         }
-        axios.get(backendUrl+'/oeffi/stations/' +
+        axios.get(config.backendUrl + '/oeffi/stations/' +
           this.station + '/departures', request)
           .then(function (response) {
             tis.departures = response.data
@@ -97,7 +97,7 @@
       this.loadData()
       setInterval(function () {
         this.loadData()
-      }.bind(this), 5000)
+      }.bind(this), config.oeffiRefreshInterval)
     }
   }
 
